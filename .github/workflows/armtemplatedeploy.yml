@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
     env:
       resource_group_name: rg-stg-githubactions
-      location: East US2
+      location: East US
     environment:
       name: staging
 
