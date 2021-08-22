@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
     env:
       resource_group_name: rg-stg-githubactions
-      location: East US
+      location: East US2
     environment:
       name: staging
 
@@ -51,7 +51,7 @@ jobs:
           template: ./arm-templates/storageaccount.json
           parameters: 
             sku=Standard_LRS
-            storageAccountName=globostg002
+            storageAccountName=tlcstg002
             location="${{ env.location }}"
           deploymentMode: incremental
 
@@ -69,7 +69,7 @@ jobs:
 
   armDeployProduction:
     name: Deploy to Production
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       resource_group_name: rg-prod-githubactions
       location: East US
