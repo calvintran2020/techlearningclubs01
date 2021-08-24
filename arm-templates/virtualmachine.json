@@ -1,13 +1,9 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+
   "parameters": {
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
-      }
-    },
+
     "adminPassword": {
       "type": "secureString",
       "minLength": 12,
@@ -15,6 +11,7 @@
         "description": "Password for the Virtual Machine."
       }
     },
+
     "dnsLabelPrefix": {
       "type": "string",
       "defaultValue": "[toLower(format('{0}-{1}', parameters('vmName'), uniqueString(resourceGroup().id, parameters('vmName'))))]",
@@ -24,7 +21,7 @@
     },
     "publicIpName": {
       "type": "string",
-      "defaultValue": "myPublicIP",
+      "defaultValue": "ETAzWinSrv-VM01-PubIP",
       "metadata": {
         "description": "Name for the Public IP used to access the Virtual Machine."
       }
@@ -55,12 +52,7 @@
       "type": "string",
       "defaultValue": "2019-Datacenter",
       "allowedValues": [
-        "2008-R2-SP1",
-        "2012-Datacenter",
-        "2012-R2-Datacenter",
-        "2016-Nano-Server",
-        "2016-Datacenter-with-Containers",
-        "2016-Datacenter",
+
         "2019-Datacenter",
         "2019-Datacenter-Core",
         "2019-Datacenter-Core-smalldisk",
@@ -90,7 +82,7 @@
     },
     "vmName": {
       "type": "string",
-      "defaultValue": "simple-vm",
+      "defaultValue": "ETAzWinSrv-VM01",
       "metadata": {
         "description": "Name of the virtual machine."
       }
@@ -99,12 +91,12 @@
   "functions": [],
   "variables": {
     "storageAccountName": "[format('bootdiags{0}', uniqueString(resourceGroup().id))]",
-    "nicName": "myVMNic",
+    "nicName": "ETAzWinSrv-VM01Nic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.0.0/24",
-    "virtualNetworkName": "MyVNET",
-    "networkSecurityGroupName": "default-NSG"
+    "virtualNetworkName": "ETAzWinSrv-VM01VNET",
+    "networkSecurityGroupName": "ETAzWinSrv-VM01-NSG"
   },
   "resources": [
     {
@@ -119,7 +111,7 @@
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2019-07-01",
       "name": "[parameters('publicIpName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -134,7 +126,7 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2019-07-01",
       "name": "[variables('networkSecurityGroupName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -157,7 +149,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2019-07-01",
       "name": "[variables('virtualNetworkName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -170,7 +162,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2019-07-01",
       "name": "[format('{0}/{1}', variables('virtualNetworkName'), variables('subnetName'))]",
       "properties": {
         "addressPrefix": "[variables('subnetPrefix')]",
@@ -185,7 +177,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2019-07-01",
       "name": "[variables('nicName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -220,7 +212,7 @@
         },
         "osProfile": {
           "computerName": "[parameters('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
+          "adminUsername": "cscadmin",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
